@@ -2,20 +2,13 @@ Name: DeployInfra
 SchemaVersion: 1.0
 RunMode: QUEUED
 
-Configuration:
-    Container:
-        Registry: DockerHub
-        Image: hashicorp/terraform:1.12.2
-
 Triggers:
     - Type: PUSH
       Branches:
           - dev
 
 Compute:
-    type: EC2
-    platform: Linux
-    size: small
+    Type: EC2
 
 Actions:
     TerraformInfraDeploy:
@@ -26,6 +19,9 @@ Actions:
             Sources:
                 - WorkflowSource
         Configuration:
+            Container:
+                Registry: DockerHub
+                Image: hashicorp/terraform:1.12.2
             Steps:
                 - Run: terraform version
                 - Run: terraform init -input=false
