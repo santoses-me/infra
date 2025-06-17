@@ -1,0 +1,23 @@
+name: Infra Deployment
+
+triggers:
+  - event: push
+    branches:
+      - dev
+
+actions:
+  terraform-deploy:
+    identifier: terraform-deploy
+    compute:
+      type: EC2
+      platform: Linux
+      size: small
+    image: hashicorp/terraform:1.12.2
+    environment:
+      name: vadev
+    steps:
+      - run: echo "Starting Terraform Deploy"
+      - run: terraform --version
+      - run: terraform init -input=false
+      - run: terraform plan -input=false
+      - run: terraform apply -auto-approve -input=false
