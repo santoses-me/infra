@@ -38,3 +38,6 @@ terraform.rc
 
 # Ignore IDEs
 .idea
+
+# Ignore node_modules
+node_modules

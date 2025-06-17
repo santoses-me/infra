@@ -1,23 +1,33 @@
-name: Infra Deployment
+Name: DeployInfra
+SchemaVersion: 1.0
+RunMode: QUEUED
 
-triggers:
-  - event: push
-    branches:
-      - dev
+Configuration:
+    Container:
+        Registry: DockerHub
+        Image: hashicorp/terraform:1.12.2
 
-actions:
-  terraform-deploy:
-    identifier: terraform-deploy
-    compute:
-      type: EC2
-      platform: Linux
-      size: small
-    image: hashicorp/terraform:1.12.2
-    environment:
-      name: vadev
-    steps:
-      - run: echo "Starting Terraform Deploy"
-      - run: terraform --version
-      - run: terraform init -input=false
-      - run: terraform plan -input=false
-      - run: terraform apply -auto-approve -input=false
+Triggers:
+    - Type: PUSH
+      Branches:
+          - dev
+
+Compute:
+    type: EC2
+    platform: Linux
+    size: small
+
+Actions:
+    TerraformInfraDeploy:
+        Identifier: aws/build@v1
+        Environment:
+            Name: vadev
+        Inputs:
+            Sources:
+                - WorkflowSource
+        Configuration:
+            Steps:
+                - Run: terraform version
+                - Run: terraform init -input=false
+                - Run: terraform plan -input=false
+                - Run: terraform apply -auto-approve -input=false
