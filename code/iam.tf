@@ -8,9 +8,20 @@ resource "aws_iam_role" "codecatalyst_deployer" {
     {
       "Effect": "Allow",
       "Principal": {
-        "Service": "codecatalyst.amazonaws.com"
+        "Service": [
+          "codecatalyst-runner.amazonaws.com",
+          "codecatalyst.amazonaws.com"
+        ]
       },
-      "Action": "sts:AssumeRole"
+      "Action": "sts:AssumeRole",
+      "Condition": {
+        "ArnLike": {
+          "aws:SourceArn": [
+            "arn:aws:codecatalyst:::space/e3420072-d71e-40bd-a987-5e4910cc94cd",
+            "arn:aws:codecatalyst:::space/e3420072-d71e-40bd-a987-5e4910cc94cd/project/*"
+          ]
+        }
+      }
     }
   ]
 }

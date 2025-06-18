@@ -6,6 +6,8 @@ Triggers:
     - Type: PUSH
       Branches:
           - dev
+      FilesChanged:
+          - infra/code/**
 
 Compute:
     Type: EC2
@@ -19,6 +21,8 @@ Actions:
             Sources:
                 - WorkflowSource
         Configuration:
+            Runtime:
+                WorkingDirectory: infra/code
             Container:
                 Registry: DockerHub
                 Image: hashicorp/terraform:1.12.2
