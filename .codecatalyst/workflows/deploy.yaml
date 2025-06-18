@@ -28,6 +28,6 @@ Actions:
                 - Run: pwd && cd code
                 - Run: terraform version
                 - Run: terraform init -input=false
-                - Run: terraform workspace select vadev -or-create=true
+                - Run: terraform workspace select vadev
                 - Run: terraform plan -input=false
                 - Run: terraform apply -auto-approve -input=false
