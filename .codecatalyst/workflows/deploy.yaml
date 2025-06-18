@@ -7,7 +7,7 @@ Triggers:
       Branches:
           - dev
       FilesChanged:
-          - infra/code/**
+          - code
 
 Compute:
     Type: EC2
@@ -21,12 +21,11 @@ Actions:
             Sources:
                 - WorkflowSource
         Configuration:
-            Runtime:
-                WorkingDirectory: infra/code
             Container:
                 Registry: DockerHub
                 Image: hashicorp/terraform:1.12.2
             Steps:
+                - Run: pwd
                 - Run: terraform version
                 - Run: terraform init -input=false
                 - Run: terraform plan -input=false
