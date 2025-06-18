@@ -25,7 +25,7 @@ Actions:
                 Registry: DockerHub
                 Image: hashicorp/terraform:1.12.2
             Steps:
-                - Run: pwd
+                - Run: pwd && cd code
                 - Run: terraform version
                 - Run: terraform init -input=false
                 - Run: terraform plan -input=false
