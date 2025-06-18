@@ -7,7 +7,7 @@ Triggers:
       Branches:
           - dev
       FilesChanged:
-          - code
+          - code/
 
 Compute:
     Type: EC2
