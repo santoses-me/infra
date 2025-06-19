@@ -1,7 +1,7 @@
 locals {
   stage  = terraform.workspace
   region = local.context_variables[terraform.workspace]["region"]
-  domain = local.context_variables[terraform.workspace]["domain"]
+  domain = "${terraform.workspace}.${local.context_variables[terraform.workspace]["domain"]}"
 
   context_variables = {
     vadev = {
