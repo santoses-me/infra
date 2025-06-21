@@ -38,3 +38,11 @@ resource "aws_route53_record" "dmarc" {
   ttl     = 600
   records = ["v=DMARC1; p=none; rua=mailto:postmaster@${local.domain}"]
 }
+
+resource "aws_route53_record" "workmail_mx" {
+  zone_id = aws_route53_zone.hosted_zone.zone_id
+  name    = local.domain
+  type    = "MX"
+  ttl     = 300
+  records = ["10 inbound-smtp.${local.region}.amazonaws.com"]
+}
