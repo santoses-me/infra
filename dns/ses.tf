@@ -28,7 +28,7 @@ resource "aws_route53_record" "spf" {
   name    = local.domain
   type    = "TXT"
   ttl     = 600
-  records = ["v=spf1 include:icloud.com include:amazonses.com ~all"]
+  records = ["v=spf1 include:amazonses.com ~all"]
 }
 
 resource "aws_route53_record" "dmarc" {
@@ -45,4 +45,26 @@ resource "aws_route53_record" "workmail_mx" {
   type    = "MX"
   ttl     = 300
   records = ["10 inbound-smtp.${local.region}.amazonaws.com"]
+}
+
+resource "aws_ses_domain_mail_from" "mail_from" {
+  domain                 = aws_ses_domain_identity.ses_domain.domain
+  mail_from_domain       = "bounce.vadev.santoses.me"
+  behavior_on_mx_failure = "UseDefaultValue"
+}
+
+resource "aws_route53_record" "mail_from_mx" {
+  zone_id = aws_route53_zone.hosted_zone.zone_id
+  name    = aws_ses_domain_mail_from.mail_from.mail_from_domain
+  type    = "MX"
+  ttl     = 600
+  records = ["10 feedback-smtp.${local.region}.amazonses.com"]
+}
+
+resource "aws_route53_record" "mail_from_spf" {
+  zone_id = aws_route53_zone.hosted_zone.zone_id
+  name    = aws_ses_domain_mail_from.mail_from.mail_from_domain
+  type    = "TXT"
+  ttl     = 600
+  records = ["v=spf1 include:amazonses.com ~all"]
 }
