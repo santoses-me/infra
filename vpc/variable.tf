@@ -28,7 +28,21 @@ variable "nat_per_az" {
   default     = false
 }
 
-variable "enable_nat" {
-  type    = bool
-  default = true
+variable "mysql_db_restore_from_snapshot" {
+  description = "When true, restore cluster from snapshot_identifier"
+  type        = bool
+  default     = false
 }
+
+variable "mysql_db_snapshot_identifier" {
+  description = "Manual/final snapshot ID to restore from"
+  type        = string
+  default     = ""
+}
+
+variable "mysql_db_skip_final_snapshot" {
+  description = "Skip final snapshot on destroy (dev only)"
+  type        = bool
+  default     = false
+}
+

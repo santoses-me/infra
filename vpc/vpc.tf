@@ -196,9 +196,9 @@ resource "aws_security_group" "db" {
   vpc_id      = module.vpc.vpc_id
 
   ingress {
-    description     = "App to DB (5432 example for Postgres)"
-    from_port       = 5432
-    to_port         = 5432
+    description     = "App to DB (3306 example for mysql)"
+    from_port       = 3306
+    to_port         = 3306
     protocol        = "tcp"
     security_groups = [aws_security_group.app.id]
   }
