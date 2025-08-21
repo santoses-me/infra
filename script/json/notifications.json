@@ -1,0 +1,11 @@
+[
+  {
+    "Notification": {
+      "NotificationType": "ACTUAL",
+      "ComparisonOperator": "GREATER_THAN",
+      "Threshold": 10,
+      "ThresholdType": "ABSOLUTE_VALUE"
+    },
+    "Subscribers": [{ "SubscriptionType": "EMAIL", "Address": "you@example.com" }]
+  }
+]

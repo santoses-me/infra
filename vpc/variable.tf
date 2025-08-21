@@ -46,3 +46,8 @@ variable "mysql_db_skip_final_snapshot" {
   default     = false
 }
 
+variable "bastion_name" {
+  type = string
+  default = "santoses-vadev-bastion"
+}
+

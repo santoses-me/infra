@@ -14,7 +14,7 @@ module "aurora_mysql_v2" {
   vpc_id                = module.vpc.vpc_id
   db_subnet_group_name  = module.vpc.database_subnet_group_name
   create_security_group = false
-
+  vpc_security_group_ids = [aws_security_group.db.id]
   monitoring_interval = 60
 
   apply_immediately = true
@@ -24,8 +24,8 @@ module "aurora_mysql_v2" {
   final_snapshot_identifier = var.mysql_db_skip_final_snapshot ? null : "${var.name}-final-${random_id.snapshot_suffix.hex}"
 
   serverlessv2_scaling_configuration = {
-    min_capacity = 0.5
-    max_capacity = 0.5
+    min_capacity = 1
+    max_capacity = 1
   }
 
   instance_class = "db.serverless"
