@@ -20,8 +20,8 @@ module "aurora_mysql_v2" {
   apply_immediately = true
 
   # Snapshot behavior on destroy
-  skip_final_snapshot       = var.mysql_db_skip_final_snapshot
-  final_snapshot_identifier = var.mysql_db_skip_final_snapshot ? null : "${var.name}-final-${random_id.snapshot_suffix.hex}"
+  skip_final_snapshot       = true
+  final_snapshot_identifier = null
 
   serverlessv2_scaling_configuration = {
     min_capacity = 1

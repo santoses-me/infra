@@ -40,12 +40,6 @@ variable "mysql_db_snapshot_identifier" {
   default     = ""
 }
 
-variable "mysql_db_skip_final_snapshot" {
-  description = "Skip final snapshot on destroy (dev only)"
-  type        = bool
-  default     = false
-}
-
 variable "bastion_name" {
   type = string
   default = "santoses-vadev-bastion"
