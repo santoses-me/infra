@@ -8,3 +8,8 @@ variable "mysql_db_enable" {
   type        = bool
   default     = true
 }
+
+variable "enable_bastion" {
+  type    = bool
+  default = true
+}

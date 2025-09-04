@@ -11,11 +11,11 @@ module "aurora_mysql_v2" {
 
   snapshot_identifier = var.mysql_db_restore_from_snapshot ? var.mysql_db_snapshot_identifier : null
 
-  vpc_id                = module.vpc.vpc_id
-  db_subnet_group_name  = module.vpc.database_subnet_group_name
-  create_security_group = false
+  vpc_id                 = module.vpc.vpc_id
+  db_subnet_group_name   = module.vpc.database_subnet_group_name
+  create_security_group  = false
   vpc_security_group_ids = [aws_security_group.db.id]
-  monitoring_interval = 60
+  monitoring_interval    = 60
 
   apply_immediately = true
 

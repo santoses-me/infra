@@ -41,7 +41,7 @@ variable "mysql_db_snapshot_identifier" {
 }
 
 variable "bastion_name" {
-  type = string
+  type    = string
   default = "santoses-vadev-bastion"
 }
 

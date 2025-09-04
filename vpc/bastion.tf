@@ -2,13 +2,13 @@
 # Minimal IAM for SSM
 ############################################
 resource "aws_iam_role" "bastion" {
-  name               = "${var.bastion_name}-role"
+  name = "${var.bastion_name}-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
-      Effect = "Allow",
+      Effect    = "Allow",
       Principal = { Service = "ec2.amazonaws.com" },
-      Action   = "sts:AssumeRole"
+      Action    = "sts:AssumeRole"
     }]
   })
   tags = local.tags
@@ -17,6 +17,20 @@ resource "aws_iam_role" "bastion" {
 resource "aws_iam_role_policy_attachment" "ssm_core" {
   role       = aws_iam_role.bastion.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+# Allow the instance to read the bucket
+resource "aws_iam_role_policy" "bastion_s3_read" {
+  name = "bastion-s3-read"
+  role = aws_iam_role.bastion.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow",
+      Action   = ["s3:GetObject"],
+      Resource = ["${aws_s3_bucket.flow_logs.arn}/adhoc/*"]
+    }]
+  })
 }
 
 resource "aws_iam_instance_profile" "bastion" {
@@ -28,8 +42,9 @@ resource "aws_iam_instance_profile" "bastion" {
 # EC2 – no public IP, no KMS, tiny gp3 root
 ############################################
 resource "aws_instance" "bastion" {
-  ami                         = data.aws_ssm_parameter.ubuntu_ami.value
-  instance_type               = "t4g.nano"
+  count = var.enable_bastion ? 1 : 0
+  ami   = data.aws_ssm_parameter.ubuntu_ami.value
+  instance_type               = "t4g.small"
   subnet_id                   = module.vpc.private_subnet_objects[0].id
   vpc_security_group_ids      = [aws_security_group.app.id]
   associate_public_ip_address = false
@@ -57,10 +72,10 @@ BASH
 
   # Root volume: smallest practical, NO KMS encryption
   root_block_device {
-  volume_size = 8
-  volume_type = "gp3"
-  encrypted   = false           # relies on account setting; if default encryption is enforced, AWS may still encrypt
-  delete_on_termination = true
+    volume_size           = 30
+    volume_type           = "gp3"
+    encrypted             = false # relies on account setting; if default encryption is enforced, AWS may still encrypt
+    delete_on_termination = true
   }
 
   tags = merge(local.tags, { name = var.name })
